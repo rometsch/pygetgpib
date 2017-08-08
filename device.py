@@ -56,7 +56,7 @@ class SpectrumAnalyzer:
 	def find_peak(self):
 		# Use the build in function of the spectrum analyzer to set the data marker
 		# to the frequency with the highest amplitude.
-		self.write("MKPH HI");
+		self.write("MKPK HI");
 
 	def get_peak_amplitude(self):
 		# Return amplitude of peak in dbm.
