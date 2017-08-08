@@ -57,6 +57,7 @@ class SpectrumAnalyzer:
 		# Use the build in function of the spectrum analyzer to set the data marker
 		# to the frequency with the highest amplitude.
 		self.write("MKPK HI");
+		self.peak_searched = True;
 
 	def get_peak_amplitude(self):
 		# Return amplitude of peak in dbm.
@@ -65,3 +66,15 @@ class SpectrumAnalyzer:
 		self.write("MKA?");
 		ans = gpib.read(self.dev, 20);
 		return float(ans.decode("ASCII").strip());
+
+	def get_peak_frequency(self):
+		# Return frequency where the peak is located in MHz.
+		if not self.peak_searched:
+			self.find_peak();
+		self.write("MKF?");
+		ans = gpib.read(self.dev, 20);
+		return float(ans.decode("ASCII").strip());
+
+	def get_peak(self):
+		# Return a list with (frequency [MHz], amplitude [dBm]) of the peak
+		return [self.get_peak_amplitude(), self.get_peak_frequency()];
