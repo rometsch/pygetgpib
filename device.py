@@ -77,4 +77,4 @@ class SpectrumAnalyzer:
 
 	def get_peak(self):
 		# Return a list with (frequency [MHz], amplitude [dBm]) of the peak
-		return [self.get_peak_amplitude(), self.get_peak_frequency()];
+		return [self.get_peak_frequency(), self.get_peak_amplitude()];
