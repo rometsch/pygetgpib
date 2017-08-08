@@ -63,5 +63,5 @@ class SpectrumAnalyzer:
 		if not self.peak_searched:
 			self.find_peak();
 		self.write("MKA?");
-		ans = gpib.read(self.dev, 100);
-		return ans.decode("UTF-8");
+		ans = gpib.read(self.dev, 20);
+		return float(ans.decode("ASCII").strip());
