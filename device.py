@@ -11,7 +11,7 @@ import gpib
 
 class SpectrumAnalyzer:
 	# Name and address of the gpib instrument as set in /etc/gpib.conf
-	gpib_lib_name = "HP82357B";
+	gpib_lib_name = "HP8591B";
 	gpib_address = 18;
 
 	def __init__(self):
