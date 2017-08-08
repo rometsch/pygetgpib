@@ -7,7 +7,12 @@
 #	Date	:	Aug. 8, 2017
 #	
 #-----------------------------------------------------------
+#	Note that you must call sweep before calling
+#	commands like get_peak or get_trace to take a sweep
+#	which means refreshing the spectrum on the analyzer.
+#-----------------------------------------------------------
 import gpib
+import numpy
 
 class SpectrumAnalyzer:
 	# Name and address of the gpib instrument as set in /etc/gpib.conf
@@ -78,3 +83,11 @@ class SpectrumAnalyzer:
 	def get_peak(self):
 		# Return a list with (frequency [MHz], amplitude [dBm]) of the peak
 		return [self.get_peak_frequency(), self.get_peak_amplitude()];
+
+	def get_trace(self):
+		# Return the data from the display as numpy array.
+		self.write("TRA?");
+		ans = gpib.read(10000); #TODO: find the correct number, this is probably too large
+		vals = ans.strip().split(",");
+		return np.array(vals, type=float);
+
