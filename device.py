@@ -47,11 +47,11 @@ class SpectrumAnalyzer:
 
 	def set_singlesweep(self):
 		self.write("SNGLS");
-		self.reset_flags();
 
 	def sweep(self):
 		# take one sweep
 		self.write("TS");
+		self.reset_flags();
 
 	def find_peak(self):
 		# Use the build in function of the spectrum analyzer to set the data marker
