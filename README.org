@@ -1,0 +1,77 @@
+#+TITLE: A PYthon library to GET data from a GPIB device (pygetgpib)
+#+AUTHOR: Thomas Rometsch
+
+
+* Description
+=pygetgpib= defines an easy to use wrapper to the =gpib= package
+that comes with the Linux library =linux-gpib= which in turn
+is a wrapper to =pyvisa=.
+It might be useful to access =pyvisa= directly, but as long as the
+=gpib= package provides all function, it should be fine.
+
+It handles the initialization of a device and provides functions
+for devices functions such as finding the peak in a spectrum.
+Usually, special ASCII commands
+(Standard Commands for Programmable Instruments (SCPI))
+need to be send over the GPIB bus to interact with a GPIB device.
+To achieve an easier interaction, functions are defined for various
+functions of the device.
+Sending SCPIs, reading of the answers and conversion to modern data types
+are performed.
+Return values are either float or integer variables or =numpy= arrays.
+
+At this time, only the spectrum analyzer =HP 8591 E= is supported.
+
+* The =HP 8591 E= spectrum analyzer
+An old spectrum analyzer developed by HP which only talks via the
+GPIB (General Purpose Instrument Bus, or something like that) interface.
+
+** A list of SCPIs
+
+SCPIs are send to the device as ASCII strings,
+e.g. via =gpib.write(dev, SCPI)=.
+Some commands result in the device providing a return value.
+Those can be read with =gpib.read(dev, length)= where =length= is
+the size of the data which is read. It could be the size of the array in bytes!?
+*** TODO check what the length parameter is exactly
+
+| SCPI  | Argument | return type | Function               | Note               |
+|-------+----------+-------------+------------------------+--------------------|
+| IP    |          |             | Reset device           |                    |
+| CF    | x MZ     |             | center frequency       | MZ = MHz, KZ = kHz |
+| SP    | x MZ     |             | span                   | MZ = MHz, KZ = kHz |
+| SNGLS |          |             | single sweep mode      |                    |
+| TS    |          |             | take one sweep         |                    |
+| MKPK  | HI/LOW?  |             | Set marker to peak     |                    |
+| MKA?  |          | Scalar      | Query marker amplitude |                    |
+| MKF?  |          | Scalar      | Query marker frequency |                    |
+| TRA?  |          | Array       | Query trace A values   |                    |
+| TRB?  |          | Array       | Query trace B values   |                    |
+
+** Format of return values
+
+GPIB supports different modes. A binary mode can be activated optionally,
+but by default values are sent as ASCII byte strings.
+
+Values returned as strings are always meant in units of the device unit.
+*** TODO look up whether there is a SCPI to look up the units
+
+Having a device with unit =dBm= for amplitudes and =Hz= for frequencies
+the results for a marker at =279.0 MHz= with =-67.38dBm=
+
+| SCPI | Result                           | Value       | Length |
+|------+----------------------------------+-------------+--------|
+| MKA? | =-67.38\r\n=                     | =-67.38dBm= |      1 |
+| MKF? | =279.0 E6\r\n=                   | =279.0 MHz= |      1 |
+| TRA? | =-71.60,-70.69,-69.82 70.23\r\n= | ...         |    401 |
+
+If the complete trace is requested via =TRA?=, all amplitude values are return as a
+comma separated list with a total of 401 values.
+
+*** TODO check whether frequencies are interval centered or on the boundaries
+
+
+* Additional resources
++ my fork of a [[https://gist.github.com/rometsch/eea6633f830e9acd0d0e55a6906fe8f6][guide]] to install linux-gpib on Ubuntu 16.04 LTS
++ [[http://linux-gpib.sourceforge.net][linux-gpib homepage]]
++ [[http://www.mhzelectronics.com/ebay/manuals/hp_8590e-series_&_8591c_spectrum_analyzer_programmers_guide.pdf][HP8591R programmers manual]]
