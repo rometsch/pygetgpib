@@ -1,11 +1,11 @@
 #-----------------------------------------------------------
-#	
+#
 #	Wrapper class to provide an abstract representation
 #	of an HP8591E Spectrum Analyzer
 #
 #	Author	:	Thomas Rometsch
 #	Date	:	Aug. 8, 2017
-#	
+#
 #-----------------------------------------------------------
 #	Note that you must call sweep before calling
 #	commands like get_peak or get_trace to take a sweep
@@ -34,7 +34,7 @@ class SpectrumAnalyzer:
 	def write(self, scpi):
 		# write a Standard Commands for Programmable Instruments (SCPI) to the device
 		gpib.write(self.dev, scpi);
-	
+
 	def reset_flags(self):
 		self.peak_searched = False;
 
@@ -87,7 +87,6 @@ class SpectrumAnalyzer:
 	def get_trace(self):
 		# Return the data from the display as numpy array.
 		self.write("TRA?");
-		ans = gpib.read(10000); #TODO: find the correct number, this is probably too large
+		ans = gpib.read(self.dev, 10000); #TODO: find the correct number, this is probably too large
 		vals = ans.strip().split(",");
 		return np.array(vals, type=float);
-
