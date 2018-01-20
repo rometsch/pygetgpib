@@ -12,7 +12,8 @@
 #	which means refreshing the spectrum on the analyzer.
 #-----------------------------------------------------------
 import gpib
-import numpy
+import numpy as np
+import time
 
 class SpectrumAnalyzer:
 	# Name and address of the gpib instrument as set in /etc/gpib.conf
@@ -30,6 +31,11 @@ class SpectrumAnalyzer:
 		# Set to single sweep mode
 		self.set_singlesweep();
 
+	def read(self, length):
+		# Read a number of bytes from the bus and return
+		# a decoded string with the results
+		ans = gpib.read(self.dev, length)
+		return ans.decode("ASCII").strip()
 
 	def write(self, scpi):
 		# write a Standard Commands for Programmable Instruments (SCPI) to the device
@@ -41,6 +47,7 @@ class SpectrumAnalyzer:
 	def reset(self):
 		# Reset device with "IP"
 		self.write("IP");
+		time.sleep(3)
 
 	def set_center_frequency(self, freq):
 		# freq: center frequency in MHz
@@ -69,16 +76,16 @@ class SpectrumAnalyzer:
 		if not self.peak_searched:
 			self.find_peak();
 		self.write("MKA?");
-		ans = gpib.read(self.dev, 20);
-		return float(ans.decode("ASCII").strip());
+		ans = self.read(20);
+		return float(ans)
 
 	def get_peak_frequency(self):
 		# Return frequency where the peak is located in MHz.
 		if not self.peak_searched:
 			self.find_peak();
 		self.write("MKF?");
-		ans = gpib.read(self.dev, 20);
-		return float(ans.decode("ASCII").strip());
+		ans = self.read(20);
+		return float(ans);
 
 	def get_peak(self):
 		# Return a list with (frequency [MHz], amplitude [dBm]) of the peak
@@ -87,6 +94,6 @@ class SpectrumAnalyzer:
 	def get_trace(self):
 		# Return the data from the display as numpy array.
 		self.write("TRA?");
-		ans = gpib.read(self.dev, 10000); #TODO: find the correct number, this is probably too large
-		vals = ans.strip().split(",");
-		return np.array(vals, type=float);
+		ans = self.read(10000); #TODO: find the correct number, this is probably too large
+		vals = ans.split(",");
+		return np.array(vals, dtype=float);
