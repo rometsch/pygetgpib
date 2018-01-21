@@ -50,7 +50,7 @@ the size of the data which is read. It could be the size of the array in bytes!?
 
 ** Format of return values
 
-GPIB supports different modes. A binary mode can be activated optionally,
+GPIB supports different modes. A binary mode can be activated optionally (programmer's guide p.75),
 but by default values are sent as ASCII byte strings.
 
 Values returned as strings are always meant in units of the device unit.
@@ -61,7 +61,7 @@ the results for a marker at =279.0 MHz= with =-67.38dBm=
 
 | SCPI | Result                           | Value       | Length |
 |------+----------------------------------+-------------+--------|
-| MKA? | =-67.38\r\n=                     | =-67.38dBm= |      1 |
+| MKA? | =-67.38\r\n=                     | =-67.38dBm=  |      1 |
 | MKF? | =279.0 E6\r\n=                   | =279.0 MHz= |      1 |
 | TRA? | =-71.60,-70.69,-69.82 70.23\r\n= | ...         |    401 |
 
@@ -69,6 +69,34 @@ If the complete trace is requested via =TRA?=, all amplitude values are return a
 comma separated list with a total of 401 values.
 
 *** TODO check whether frequencies are interval centered or on the boundaries
+
+** Different transfer modes
+
+* P mode = real numbers
+
+In this mode, which is the default mode, values are represented as real numbers and transferred as ASCII strings.
+Values are in dBm, dBmV, db\mu V, volts or watts.
+The amplitude can be specified with the =AUNITS= SCPI.
+
+This mode is set via =TDF P=.
+
+* B mode = binary mode
+
+In the binary mode, values are transferred as two or one 8-bit bytes (can be set via SCPI =MDS=).
+Values are in the form of the internal representation and can have interger values
+between 0 and 8000 which are connected to physical units via some reference level.
+
+This reference level can be obtained with the SCPI =RL?=
+
+To convert to a real number in volts or dBm.
+
+#+BEGIN_SRC
+amplitude in dBm = (trace data - 8000) * 0.01 + reference level
+amplitude in volts = reference level/8000 * trace data
+#+END_SRC
+
+
+
 
 
 * Additional resources
