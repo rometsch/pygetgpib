@@ -61,7 +61,7 @@ the results for a marker at =279.0 MHz= with =-67.38dBm=
 
 | SCPI | Result                           | Value       | Length |
 |------+----------------------------------+-------------+--------|
-| MKA? | =-67.38\r\n=                     | =-67.38dBm=  |      1 |
+| MKA? | =-67.38\r\n=                     | =-67.38dBm= |      1 |
 | MKF? | =279.0 E6\r\n=                   | =279.0 MHz= |      1 |
 | TRA? | =-71.60,-70.69,-69.82 70.23\r\n= | ...         |    401 |
 
@@ -103,3 +103,4 @@ amplitude in volts = reference level/8000 * trace data
 + my fork of a [[https://gist.github.com/rometsch/eea6633f830e9acd0d0e55a6906fe8f6][guide]] to install linux-gpib on Ubuntu 16.04 LTS
 + [[http://linux-gpib.sourceforge.net][linux-gpib homepage]]
 + [[http://www.mhzelectronics.com/ebay/manuals/hp_8590e-series_&_8591c_spectrum_analyzer_programmers_guide.pdf][HP8591R programmers manual]]
++ a [[https://xdevs.com/guide/ni_gpib_rpi/][guide]] to install linux-gpib on a Raspberry Pi
