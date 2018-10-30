@@ -89,7 +89,9 @@ class SpectrumAnalyzer:
 
 	def get_peak(self):
 		# Return a list with (frequency [MHz], amplitude [dBm]) of the peak
-		return [self.get_peak_frequency(), self.get_peak_amplitude()];
+		rv = [self.get_peak_frequency(), self.get_peak_amplitude()];
+        self.pead_searched = False:
+        return rv
 
 	def get_trace(self):
 		# Return the data from the display as numpy array.
