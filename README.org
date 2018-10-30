@@ -98,9 +98,19 @@ amplitude in volts = reference level/8000 * trace data
 
 
 
+* python3 gpib package
+
+By default, the =linux-gpib= package (4.1.0) only installs the =gpib= python package for python 2.7.
+
+To install it also for =python3=, navigate to the =linux-gpib-user/language/python= directory and run
+
+#+BEGIN_SRC sh
+python3 setup.py install
+#+END_SRC 
 
 * Additional resources
 + my fork of a [[https://gist.github.com/rometsch/eea6633f830e9acd0d0e55a6906fe8f6][guide]] to install linux-gpib on Ubuntu 16.04 LTS
 + [[http://linux-gpib.sourceforge.net][linux-gpib homepage]]
 + [[http://www.mhzelectronics.com/ebay/manuals/hp_8590e-series_&_8591c_spectrum_analyzer_programmers_guide.pdf][HP8591R programmers manual]]
 + a [[https://xdevs.com/guide/ni_gpib_rpi/][guide]] to install linux-gpib on a Raspberry Pi
+  
