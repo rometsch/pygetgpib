@@ -31,6 +31,10 @@ class SpectrumAnalyzer:
 		# Set to single sweep mode
 		self.set_singlesweep();
 
+        # device config
+        self.center_frequency = None
+        self.span_frequency = None
+
 	def read(self, length):
 		# Read a number of bytes from the bus and return
 		# a decoded string with the results
